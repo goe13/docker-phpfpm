@@ -1,0 +1,22 @@
+version: '3.2'
+
+services:
+  php-fpm:
+    build: ./php/
+    ports:
+      - "9000:9000"
+    # links:
+    #   - mysql-db:mysql-db
+    #   - redis-db:redis-db
+    environment: 
+      NLS_DATE_FORMAT: YYYY-MM-DD HH24:MI:SS
+      NLS_LANG: SIMPLIFIED CHINESE_CHINA.AL32UTF8
+    volumes:
+      - ./vhosts:/data/www:rw
+      - ./php/php.ini:/usr/local/etc/php/php.ini:ro # 当前php配置文件；可以拷贝修改php-dev.ini为想要的配置
+      - ./php/php-fpm.conf:/usr/local/etc/php-fpm.conf:ro
+      - ./logs:/var/log/php-fpm:rw
+    restart: always
+    command: php-fpm
+    # networks:
+    #   - custom_net
